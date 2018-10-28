@@ -6,14 +6,17 @@ video_cap=cv2.VideoCapture(0)
 while True:# We repeat infinitely (until break):
 	_,frame=video_cap.read() # We get the last frame.
 	image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-	image = cv2.GaussianBlur(image, (7, 7), 0)
+	# image = cv2.GaussianBlur(image, (7, 7), 0)
 	# image=cv2.cv2.bilateralFilter(image,9,41,41)
-	image = cv2.Canny(image, 100,180)
-	image=cv2.flip(image,1)
+	# image = cv2.Canny(image, 80,100)
+	(_,thresh)=cv2.threshold(image,185,255,cv2.THRESH_BINARY_INV)
+	image=cv2.flip(thresh,1)
+	image=cv2.convexHull(image, returnPoints=False)
+	print(len(image))
 	# lap = cv2.Laplacian(image, cv2.CV_64F)
 	# lap = np.uint8(np.absolute(lap))
 
-	# cv2.imshow("Canny", lap)
+	cv2.imshow("Canny", image)
 	if cv2.waitKey(1) & 0xFF == ord('q'): # If we type on the keyboard:
 		break    
             
